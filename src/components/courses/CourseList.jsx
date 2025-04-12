@@ -1,7 +1,7 @@
 // src/components/courses/CourseList.jsx
 import { useState, useEffect } from 'react';
 import API from '../../services/api';
-import CourseCard from './CourseCard'; // Fixed typo
+import CourseCard from './CourseCard';
 import CourseForm from './CourseForm';
 
 function CourseList() {
@@ -73,7 +73,6 @@ function CourseList() {
       </div>
       
       <div className="flex flex-col md:flex-row gap-6">
-        {/* Filters Panel - Right Side */}
         <div className="md:w-1/3 order-2 md:order-2">
           <div className="sticky top-4">
             <div className="bg-zinc-800 rounded-lg p-5 mb-6 border border-zinc-700">
@@ -143,9 +142,7 @@ function CourseList() {
           </div>
         </div>
         
-        {/* Main Content - Left Side */}
         <div className="md:w-2/3 order-1 md:order-1">
-          {/* Create/Edit Form */}
           <div className="bg-zinc-800 rounded-lg p-5 mb-6 border border-zinc-700">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold">
@@ -171,7 +168,6 @@ function CourseList() {
             />
           </div>
           
-          {/* Course Listing */}
           <div className="mb-6">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold">Your Courses</h2>

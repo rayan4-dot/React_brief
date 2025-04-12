@@ -19,7 +19,6 @@ function CourseForm({ initialData = null, categories = [], onSuccess }) {
 
   const validate = () => {
     const newErrors = {};
-    if (!title.trim()) newErrors.title = 'Course title is required';
     if (!categoryId) newErrors.categoryId = 'Category is required';
     
     setErrors(newErrors);
@@ -34,7 +33,7 @@ function CourseForm({ initialData = null, categories = [], onSuccess }) {
     const payload = { 
       title, 
       description, 
-      category_id: categoryId, 
+      category_id: categoryId,
     }; 
     
     console.log('Submitting payload:', payload);
@@ -69,12 +68,11 @@ function CourseForm({ initialData = null, categories = [], onSuccess }) {
         <input
           id="course-title"
           type="text"
-          placeholder="Enter course title"
+          placeholder="Enter course title (optional)"
           value={title}
           onChange={e => setTitle(e.target.value)}
-          className={`w-full px-3 py-2 bg-zinc-700 border ${errors.title ? 'border-red-500' : 'border-zinc-600'} rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-white`}
+          className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
         />
-        {errors.title && <p className="mt-1 text-sm text-red-400">{errors.title}</p>}
       </div>
       
       <div>
@@ -83,7 +81,7 @@ function CourseForm({ initialData = null, categories = [], onSuccess }) {
         </label>
         <textarea
           id="course-description"
-          placeholder="Enter course description"
+          placeholder="Enter course description (optional)"
           value={description}
           onChange={e => setDescription(e.target.value)}
           rows="4"
