@@ -1,8 +1,11 @@
-// src/components/courses/CourseCrad.jsx
+// src/components/courses/CourseCard.jsx
 import { useNavigate } from 'react-router-dom';
 
-function CourseCard({ course, onDelete, onEdit }) {
+function CourseCard({ course, onDelete, onEdit, categories = [] }) {
   const navigate = useNavigate();
+
+  // Derive category_name from category_id if not provided directly
+  const category_name = categories.find(cat => cat.id === course.category_id)?.name || 'Unknown';
 
   const handleClick = () => {
     navigate(`/courses/${course.id}`);
@@ -17,14 +20,14 @@ function CourseCard({ course, onDelete, onEdit }) {
         <div className="flex-1">
           <div className="flex items-center mb-2">
             <span className="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">
-              {course.category_name}
+              {category_name}
             </span>
             <span className="text-gray-500 text-sm">
-              {course.duration} hours
+              {course.duration ? `${course.duration} hours` : 'Duration not specified'}
             </span>
           </div>
           
-          <h3 className="text-xl font-bold text-gray-800 mb-2">{course.name}</h3>
+          <h3 className="text-xl font-bold text-gray-800 mb-2">{course.title}</h3>
           <p className="text-gray-600 mb-4 line-clamp-2">{course.description}</p>
         </div>
       </div>

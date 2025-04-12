@@ -39,6 +39,7 @@ import Categories from './pages/Categories.jsx';
 import Tags from './pages/Tags.jsx';
 import Stats from './pages/Stats.jsx';
 
+
 function App() {
   return (
     <Router>

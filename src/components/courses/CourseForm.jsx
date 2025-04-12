@@ -3,27 +3,24 @@ import { useState, useEffect } from 'react';
 import API from '../../services/api';
 
 function CourseForm({ initialData = null, categories = [], onSuccess }) {
-  const [name, setName] = useState('');
+  const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [categoryId, setCategoryId] = useState('');
-
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (initialData) {
-      setName(initialData.name || '');
+      setTitle(initialData.title || '');
       setDescription(initialData.description || '');
       setCategoryId(initialData.category_id || '');
-
       setErrors({});
     }
   }, [initialData]);
 
   const validate = () => {
     const newErrors = {};
-    if (!name.trim()) newErrors.name = 'Course name is required';
+    if (!title.trim()) newErrors.title = 'Course title is required';
     if (!categoryId) newErrors.categoryId = 'Category is required';
-
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -35,10 +32,9 @@ function CourseForm({ initialData = null, categories = [], onSuccess }) {
     if (!validate()) return;
     
     const payload = { 
-      name, 
+      title, 
       description, 
       category_id: categoryId, 
-
     }; 
     
     console.log('Submitting payload:', payload);
@@ -52,14 +48,12 @@ function CourseForm({ initialData = null, categories = [], onSuccess }) {
       }
       console.log('Course form response:', response.data);
       onSuccess();
-      setName('');
+      setTitle('');
       setDescription('');
       setCategoryId('');
-
       setErrors({});
     } catch (error) {
       console.error('Course form error:', error.response?.data || error.message);
-      // Set API errors if available
       if (error.response?.data?.errors) {
         setErrors(error.response.data.errors);
       }
@@ -69,18 +63,18 @@ function CourseForm({ initialData = null, categories = [], onSuccess }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label htmlFor="course-name" className="block text-sm font-medium text-zinc-300 mb-1">
-          Course Name
+        <label htmlFor="course-title" className="block text-sm font-medium text-zinc-300 mb-1">
+          Course Title
         </label>
         <input
-          id="course-name"
+          id="course-title"
           type="text"
-          placeholder="Enter course name"
-          value={name}
-          onChange={e => setName(e.target.value)}
-          className={`w-full px-3 py-2 bg-zinc-700 border ${errors.name ? 'border-red-500' : 'border-zinc-600'} rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-white`}
+          placeholder="Enter course title"
+          value={title}
+          onChange={e => setTitle(e.target.value)}
+          className={`w-full px-3 py-2 bg-zinc-700 border ${errors.title ? 'border-red-500' : 'border-zinc-600'} rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-white`}
         />
-        {errors.name && <p className="mt-1 text-sm text-red-400">{errors.name}</p>}
+        {errors.title && <p className="mt-1 text-sm text-red-400">{errors.title}</p>}
       </div>
       
       <div>
