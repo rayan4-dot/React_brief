@@ -55,9 +55,6 @@ function Stats() {
         <div style={{ marginBottom: '2rem' }}>
           <h2>Course Statistics</h2>
           <p><strong>Total Courses:</strong> {stats.courses.total_courses}</p>
-          <p><strong>Beginner Courses:</strong> {stats.courses.Beginner_courses}</p>
-          <p><strong>Intermediate Courses:</strong> {stats.courses.Intermediate_courses}</p>
-          <p><strong>Advanced Courses:</strong> {stats.courses.Advanced_courses}</p>
         </div>
       )}
 
