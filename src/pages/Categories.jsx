@@ -1,3 +1,4 @@
+// src/pages/Categories.jsx
 import CategoryManagement from '../components/categories/CategoryManagement.jsx';
 
 function Categories() {
