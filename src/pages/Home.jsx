@@ -30,13 +30,16 @@ function Home() {
           API.get('/stats/tags'),
         ]);
 
-        setFeaturedCourses(coursesRes.data.data || coursesRes.data);
-        setCategories(coursesRes.data.slice(0, 4));
-        setTags(tagsRes.data.slice(0, 4));
+        // Fix categories assignment and handle response structure
+        setFeaturedCourses(coursesRes.data.data || coursesRes.data || []);
+        setCategories(categoriesRes.data.data?.slice(0, 4) || categoriesRes.data.slice(0, 4) || []);
+        setTags(tagsRes.data.data?.slice(0, 4) || tagsRes.data.slice(0, 4) || []);
+
+        // Fix stats to match AdminController.php response
         setStats({
-          total_courses: courseStatsRes.data.total_courses || 0,
-          total_categories: categoryStatsRes.data.total_categories || 0,
-          total_tags: tagStatsRes.data.total_tags || 0,
+          total_courses: courseStatsRes.data.data?.total || 0,
+          total_categories: categoryStatsRes.data.data?.total || 0,
+          total_tags: tagStatsRes.data.data?.total || 0,
         });
       } catch (error) {
         console.error('Error fetching home data:', error);
@@ -139,95 +142,95 @@ function Home() {
                 className="text-fuchsia-400 hover:text-fuchsia-300 font-medium flex items-center"
               >
                 <span className="mr-1">←</span> All Paths
-            </button>
+              </button>
+            </div>
+
+            {loading ? (
+              <Loader />
+            ) : categories.length > 0 ? (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {categories.map(category => (
+                  <div
+                    key={category.id}
+                    className="bg-zinc-800 p-5 rounded-md border border-zinc-700 hover:border-fuchsia-500 transition-all cursor-pointer"
+                    onClick={() => navigate(`/categories/${category.id}`)}
+                  >
+                    <h3 className="font-bold text-lg mb-2">{category.name || 'Unnamed Category'}</h3>
+                    {category.description && (
+                      <p className="text-zinc-400 text-sm">{category.description}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 bg-zinc-800 rounded-md">
+                <p className="text-zinc-400">No paths available</p>
+              </div>
+            )}
           </div>
-
-          {loading ? (
-            <Loader />
-          ) : categories.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {categories.map(category => (
-                <div
-                  key={category.id}
-                  className="bg-zinc-800 p-5 rounded-md border border-zinc-700 hover:border-fuchsia-500 transition-all cursor-pointer"
-                  onClick={() => navigate(`/categories/${category.id}`)}
-                >
-                  <h3 className="font-bold text-lg mb-2">{category.name}</h3>
-                  {category.description && (
-                    <p className="text-zinc-400 text-sm">{category.description}</p>
-                  )}
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12 bg-zinc-800 rounded-md">
-              <p className="text-zinc-400">No paths available</p>
-            </div>
-          )}
         </div>
-      </div>
 
-      {/* Tags Section */}
-      <div className="py-12 bg-zinc-900">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-2xl font-bold">Explore Tags</h2>
-            <button
-              onClick={navigateToTags}
-              className="text-fuchsia-400 hover:text-fuchsia-300 font-medium flex items-center"
-            >
-              <span className="mr-1">←</span> All Tags
-            </button>
+        {/* Tags Section */}
+        <div className="py-12 bg-zinc-900">
+          <div className="max-w-6xl mx-auto px-4">
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-2xl font-bold">Explore Tags</h2>
+              <button
+                onClick={navigateToTags}
+                className="text-fuchsia-400 hover:text-fuchsia-300 font-medium flex items-center"
+              >
+                <span className="mr-1">←</span> All Tags
+              </button>
+            </div>
+
+            {loading ? (
+              <Loader />
+            ) : tags.length > 0 ? (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {tags.map(tag => (
+                  <div
+                    key={tag.id}
+                    className="bg-zinc-800 p-5 rounded-md border border-zinc-700 hover:border-fuchsia-500 transition-all cursor-pointer"
+                    onClick={() => navigate(`/tags/${tag.id}`)} // Fixed navigation to specific tag
+                  >
+                    <h3 className="font-bold text-lg mb-2">{tag.name || 'Unnamed Tag'}</h3>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 bg-zinc-800 rounded-md">
+                <p className="text-zinc-400">No tags available</p>
+              </div>
+            )}
           </div>
-
-          {loading ? (
-            <Loader />
-          ) : tags.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {tags.map(tag => (
-                <div
-                  key={tag.id}
-                  className="bg-zinc-800 p-5 rounded-md border border-zinc-700 hover:border-fuchsia-500 transition-all cursor-pointer"
-                  onClick={navigateToTags}
-                >
-                  <h3 className="font-bold text-lg mb-2">{tag.name}</h3>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12 bg-zinc-800 rounded-md">
-              <p className="text-zinc-400">No tags available</p>
-            </div>
-          )}
         </div>
-      </div>
 
-      {/* Stats Section */}
-      <div className="py-12 bg-zinc-900">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-2xl font-bold mb-8">Platform Stats</h2>
-          {loading ? (
-            <Loader />
-          ) : (
-            <div className="bg-zinc-800 rounded-lg p-6 border border-zinc-700">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                <div>
-                  <h3 className="text-3xl font-bold text-fuchsia-400">{stats.total_courses}</h3>
-                  <p className="text-zinc-400 mt-2">Courses Available</p>
-                </div>
-                <div>
-                  <h3 className="text-3xl font-bold text-fuchsia-400">{stats.total_categories}</h3>
-                  <p className="text-zinc-400 mt-2">Learning Categories</p>
-                </div>
-                <div>
-                  <h3 className="text-3xl font-bold text-fuchsia-400">{stats.total_tags}</h3>
-                  <p className="text-zinc-400 mt-2">Skill Tags</p>
+        {/* Stats Section */}
+        <div className="py-12 bg-zinc-900">
+          <div className="max-w-6xl mx-auto px-4">
+            <h2 className="text-2xl font-bold mb-8">Platform Stats</h2>
+            {loading ? (
+              <Loader />
+            ) : (
+              <div className="bg-zinc-800 rounded-lg p-6 border border-zinc-700">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                  <div>
+                    <h3 className="text-3xl font-bold text-fuchsia-400">{stats.total_courses}</h3>
+                    <p className="text-zinc-400 mt-2">Courses Available</p>
+                  </div>
+                  <div>
+                    <h3 className="text-3xl font-bold text-fuchsia-400">{stats.total_categories}</h3>
+                    <p className="text-zinc-400 mt-2">Learning Categories</p>
+                  </div>
+                  <div>
+                    <h3 className="text-3xl font-bold text-fuchsia-400">{stats.total_tags}</h3>
+                    <p className="text-zinc-400 mt-2">Skill Tags</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
       </main>
       <Footer />
     </div>
