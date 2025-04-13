@@ -150,7 +150,6 @@ function Home() {
                   <p className="text-zinc-400 text-sm line-clamp-2 mb-4">{course.description}</p>
                 </div>
                 <div className="p-4 flex justify-between items-center">
-                  <span className="text-xs text-zinc-500">{course.duration} hours</span>
                   <span className="text-fuchsia-400 text-sm">Learn More</span>
                 </div>
               </div>
